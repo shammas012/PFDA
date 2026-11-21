@@ -2,18 +2,13 @@
 # Date: 21 November 2026
 # The program should print out the dates of the bank holidays that happen in northern Ireland.
 
-import csv
 import requests
-from pathlib import Path
 
 url = "https://www.gov.uk/bank-holidays.json"
 response = requests.get(url)
 data = response.json()
-# print(data)
-print(data["northern-ireland"]["events"][0])
-# print(data["northern-ireland"])
-print(data["northern-ireland"]["events"])
+northern_ireland_events = data["northern-ireland"]
+other_egions = []
 
-for event in data["northern-ireland"]["events"]:
-    # print(event)
+for event in northern_ireland["events"]:
     print(event["date"], event["title"])
