@@ -7,7 +7,7 @@ import requests
 url = "https://www.gov.uk/bank-holidays.json"
 response = requests.get(url)
 data = response.json()
-print(data.keys())
+# print(data.keys())
 northern_ireland_events = data["northern-ireland"]
 other_region_events = []
 
@@ -27,6 +27,8 @@ for region in ["england-and-wales", "scotland"]:
 
 # Workflow 2 : Compare uniqueness by title only
 
+print("\nDetails of Unique Northern Ireland holidays:\n")
+
 for event in northern_ireland_events["events"]:
     holiday_exists = False
 
@@ -35,4 +37,5 @@ for event in northern_ireland_events["events"]:
             holiday_exists = True
 
     if not holiday_exists:
-        print(event["date"], event["title"])
+        # print("Date: ",f"{event['date']} - Event: {event['title']}")
+        print(f"{event['date']} - {event['title']} \n")
