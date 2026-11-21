@@ -9,5 +9,11 @@ from pathlib import Path
 url = "https://www.gov.uk/bank-holidays.json"
 response = requests.get(url)
 data = response.json()
-print(data)
+# print(data)
 print(data["northern-ireland"]["events"][0])
+# print(data["northern-ireland"])
+print(data["northern-ireland"]["events"])
+
+for event in data["northern-ireland"]["events"]:
+    # print(event)
+    print(event["date"], event["title"])
