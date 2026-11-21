@@ -1,26 +1,41 @@
-import csv
+# Author: Mohamed Shammas
+# Date: 21 November 2026
+# The program should print out the dates of the bank holidays that happen in northern Ireland.
+
 import requests
-from pathlib import Path
-
-FILENAME = "data.csv"
-DATADIR = Path(__file__).parent / "Data"
-
-with open(DATADIR / FILENAME, "rt", newline="") as fp:
-    reader = csv.reader(fp, delimiter=",")
-    for line in reader:
-        print(line)
-
-with open(DATADIR / FILENAME, "rt", newline="") as fp:
-    reader = csv.DictReader(fp, delimiter=",")
-    total = 0
-    count = 0
-    for line in reader:
-        total += int(line["Age"])
-        count += 1
-    print(f"average is {total / count}")
 
 url = "https://www.gov.uk/bank-holidays.json"
 response = requests.get(url)
 data = response.json()
-print(data)
-print(data["northern-ireland"]["events"][0])
+# print(data.keys())
+northern_ireland_events = data["northern-ireland"]
+other_region_events = []
+
+# List only the events unique to Northern Ireland, by checking if the event is not in the other regions for the same day.
+
+for region in ["england-and-wales", "scotland"]:
+    for event in data[region]["events"]:
+        other_region_events.append({"date": event["date"],"title" : event["title"]})
+
+# # Workflow 1 : Compare uniqueness by title and date. uncomment the lines 23 to 26 to see comparison by title and date
+
+
+# for event in northern_ireland_events["events"]:
+#     event_details = (event["title"], event["date"])
+#     if event_details not in other_region_events:
+#         print(event["date"], event["title"])
+
+# Workflow 2 : Compare uniqueness by title only
+
+print("\nDetails of Unique Northern Ireland holidays:\n")
+
+for event in northern_ireland_events["events"]:
+    holiday_exists = False
+
+    for other_event in other_region_events:
+        if event["title"] == other_event["title"]:
+            holiday_exists = True
+
+    if not holiday_exists:
+        # print("Date: ",f"{event['date']} - Event: {event['title']}")
+        print(f"{event['date']} - {event['title']} \n")
