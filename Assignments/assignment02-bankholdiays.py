@@ -11,13 +11,17 @@ print(data.keys())
 northern_ireland_events = data["northern-ireland"]
 other_region_events = []
 
-# List only the events unique to Northern Ireland, by checking if the event is not in the other regions.
+# List only the events unique to Northern Ireland, by checking if the event is not in the other regions for the same day.
+
+# # Workflow 1 : Compare uniqueness by title and date
 
 for region in ["england-and-wales", "scotland"]:
     for event in data[region]["events"]:
-        other_region_events.append(event["date"],event["title"])
+        other_region_events.append({"date": event["date"],"title" : event["title"]})
 
 for event in northern_ireland_events["events"]:
-    print(event["date"], event["title"])
+    event_details = (event["title"], event["date"])
+    if event_details not in other_region_events:
+        print(event["date"], event["title"])
 
-print(other_region_events)
+# Workflow 2 : Compare uniqueness by title only
